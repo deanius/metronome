@@ -17,7 +17,12 @@ export const metronomeReducer = createReducer({}, metronomeInitialState)
 
 export const viewReducer = createReducer({
     'View.Speech.start': (state) => state.set('speechActive', true),
-    'View.Speech.stop': (state) => state.set('speechActive', false)
+    'View.Speech.stop': (state) => state.set('speechActive', false),
+    'View.Timer.tick': (state) => {
+        return state
+            .update('present', p => p + 1)
+            .set('active', true)
+    }
 }, new iMap({
     present: 2,
     active: false,

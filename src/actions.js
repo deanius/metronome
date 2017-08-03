@@ -15,6 +15,11 @@ export const Timer = {
             type: 'Timer.stop'
         }
 
+    },
+    tick() {
+        return {
+            type: 'View.Timer.tick'
+        }
     }
 }
 

@@ -7,6 +7,7 @@ import registerServiceWorker from './registerServiceWorker';
 import { AntaresInit } from 'antares-protocol';
 import { metronomeReducer, metronomeInitialState, viewReducer } from './reducer'
 import { Timer, Speech } from './actions'
+import { Epics } from './epics'
 
 // target every action to a key called
 const assignKey = () => ({ key: defaultKey })
@@ -30,7 +31,8 @@ const assignKey = () => ({ key: defaultKey })
 const Antares = AntaresInit({
     ReducerForKey: () => metronomeReducer,
     MetaEnhancers: [assignKey],
-    ViewReducer: viewReducer
+    ViewReducer: viewReducer,
+    Epics
 })
 
 // And get these fields back for calling and debugging
@@ -53,7 +55,6 @@ if ('webkitSpeechRecognition' in window) {
     }
 
     document.addEventListener('keypress', e => {
-        console.log(e)
         if (e.key === 'r') {
             process(Speech.start())
         }
