@@ -6,5 +6,10 @@ const { Observable } = Rx
 export const Epics = {
     tickTillStopped: action$ =>
         action$.ofType('Timer.start')
-        .mapTo(Timer.tick())
+            .mergeMap(() => {
+                return Observable
+                    .interval(1000)
+                    .mapTo(Timer.tick())
+                    .takeUntil(action$.ofType('Timer.stop'))
+            })
 }

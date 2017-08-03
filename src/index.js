@@ -69,10 +69,13 @@ if ('webkitSpeechRecognition' in window) {
             recognition.start()
         }
 
-        if (type === 'View.Speech.stop' &&
-            payload && payload.lastResult && payload.lastResult.startsWith('start')) {
-
-            process(Timer.start())
+        if (type === 'View.Speech.stop') {
+            if (payload && payload.lastResult && payload.lastResult.startsWith('start')) {
+                process(Timer.start())
+            }
+            if (payload && payload.lastResult && payload.lastResult.startsWith('stop')) {
+                process(Timer.stop())
+            }
         }
     })
 }
