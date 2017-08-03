@@ -5,12 +5,24 @@ export const metronomeInitialState = {
     blocks: [
         {
             name: 'Intro',
-            duration: 1 * 60
+            duration: 2 //* 60
         },
         {
             name: 'CLI Args',
-            duration: 7 * 60
-        }
+            duration: 7 //* 60
+        },
+        {
+            name: 'File Write',
+            duration: 15 //* 60
+        },
+        {
+            name: 'Docs/Stack Overflow',
+            duration: 7 //* 60
+        },
+        {
+            name: 'File Read',
+            duration: 10 //* 60
+        },
     ]
 }
 export const metronomeReducer = createReducer({}, metronomeInitialState)
@@ -22,9 +34,14 @@ export const viewReducer = createReducer({
         return state
             .update('present', p => p + 1)
             .set('active', true)
+    },
+    'View.Timer.stop': (state) => {
+        return state
+            .set('active', false)
+            .set('present', 0)
     }
 }, new iMap({
-    present: 2,
+    present: 0,
     active: false,
     speechActive: false
 }))

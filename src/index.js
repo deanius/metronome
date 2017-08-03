@@ -36,7 +36,7 @@ const Antares = AntaresInit({
 })
 
 // And get these fields back for calling and debugging
-const { process, announce } = Antares
+const { process } = Antares
 
 let recognition
 if ('webkitSpeechRecognition' in window) {
