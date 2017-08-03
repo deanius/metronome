@@ -2,8 +2,27 @@ import React, { PureComponent } from 'react'
 import './App.css'
 // action creators
 import { Timer, Speech } from './actions'
-import TimeFormat from 'hh-mm-ss'
 export const defaultKey = ['presentation', 0]
+
+if (!String.prototype.padStart) {
+    String.prototype.padStart = function padStart(targetLength,padString) {
+        targetLength = targetLength>>0; //floor if number or convert non-number to 0;
+        padString = String(padString || ' ');
+        if (this.length > targetLength) {
+            return String(this);
+        }
+        else {
+            targetLength = targetLength-this.length;
+            if (targetLength > padString.length) {
+                padString += padString.repeat(targetLength/padString.length); //append to original to ensure we are longer than needed
+            }
+            return padString.slice(0,targetLength) + String(this);
+        }
+    };
+}
+const humanDuration = duration => {
+  return `${Math.floor(duration / 60)}:${String(Math.floor(duration % 60)).padStart(2, '0')}`
+}
 
 const addBeginEnd = blocks => {
   let elapsed = 0
@@ -22,7 +41,10 @@ export const makeAppProps = state => ({
   presentation: state.antares.getIn(defaultKey)
     .update('blocks', addBeginEnd),
   view: state.view,
-  speechAware: ('webkitSpeechRecognition' in window)
+  speechAware: ('webkitSpeechRecognition' in window),
+  currentBlock() {
+    return this.presentation.toJS().blocks.find(b => b.begin >= this.view.present)
+  }
 })
 
 class App extends PureComponent {
@@ -38,9 +60,7 @@ class App extends PureComponent {
     const isActive = view.get('active')
     const speechActive = view.get('speechActive')
 
-    const humanDuration = duration => {
-      return TimeFormat.fromS(duration)
-    }
+    const remaining = this.props.currentBlock() && (this.props.currentBlock().end - present)
 
     return (
       <div className="App">
@@ -50,7 +70,7 @@ class App extends PureComponent {
           {speechAware && speechActive && '🎧' }
         </span>
         </h1>
-        <h3>{present}</h3>
+        <h3>{humanDuration(present)}</h3>
         <div>
           <button onClick={e => process(Timer.start())}>Start</button>
           <button onClick={e => process(Timer.stop())}>Stop</button>
