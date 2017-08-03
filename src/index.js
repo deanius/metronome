@@ -6,7 +6,7 @@ import { default as App, makeAppProps, defaultKey } from './App';
 import registerServiceWorker from './registerServiceWorker';
 import { AntaresInit } from 'antares-protocol';
 import { metronomeReducer, metronomeInitialState, viewReducer } from './reducer'
-import { Speech } from './actions'
+import { Timer, Speech } from './actions'
 
 // target every action to a key called
 const assignKey = () => ({ key: defaultKey })
@@ -44,7 +44,7 @@ if ('webkitSpeechRecognition' in window) {
 
         for (var i = event.resultIndex; i < event.results.length; ++i) {
             if (event.results[i].isFinal) {
-                finalTranscript += event.results[i][0].transcript
+                finalTranscript = event.results[i][0].transcript
             }
         }
     }
@@ -52,13 +52,26 @@ if ('webkitSpeechRecognition' in window) {
         process( Speech.stop({ lastResult: finalTranscript }) )
     }
 
-            // hook it up to antares
-    Antares.subscribeRenderer(({ action: { type } }) => {
+    document.addEventListener('keypress', e => {
+        console.log(e)
+        if (e.key === 'r') {
+            process(Speech.start())
+        }
+    })
+
+    // hook it up to antares
+    Antares.subscribeRenderer(({ action: { type, payload } }) => {
         if (!type.startsWith('View.Speech.')) return
 
         if (type === 'View.Speech.start') {
             // turn it on
             recognition.start()
+        }
+
+        if (type === 'View.Speech.stop' &&
+            payload && payload.lastResult && payload.lastResult.startsWith('start')) {
+
+            process(Timer.start())
         }
     })
 }
@@ -77,6 +90,6 @@ process({
 // The State Shape of an Antares store has two top-level immutable objects:
 //   antares - in which shared client/server data are stored under keys
 //   view - in which any non-shared view parameters of those data under antares are stored
-const ConnectedApp = connect(makeAppProps, () => ({ process, announce }))(App)
+const ConnectedApp = connect(makeAppProps, () => ({ process }))(App)
 ReactDOM.render(<ConnectedApp store={Antares.store} />, document.getElementById('root'));
 registerServiceWorker();

@@ -1,6 +1,5 @@
-import React, { PureComponent } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { PureComponent } from 'react'
+import './App.css'
 // action creators
 import { Timer, Speech } from './actions'
 
@@ -18,7 +17,7 @@ class App extends PureComponent {
     // data fields
     const { presentation, view, speechAware } = this.props
     // dispatching functions
-    const { process, announce } = this.props
+    const { process } = this.props
 
     const blocks = presentation.get('blocks')
     const name = presentation.get('name')
@@ -27,11 +26,12 @@ class App extends PureComponent {
 
     return (
       <div className="App">
-        <h1>{name}</h1>
-        <h2><span onClick={e => process(Speech[speechActive ? 'stop' : 'start']())}>
+        <h1>{name}
+        <span onClick={e => process(Speech[speechActive ? 'stop' : 'start']())}>
           {speechAware ? '🎤' : '🚫🎤'}
           {speechAware && speechActive && '🎧' }
-        </span></h2>
+        </span>
+        </h1>
         <h3>{present}</h3>
         <div>
           <button onClick={e => process(Timer.start())}>Start</button>
@@ -39,7 +39,7 @@ class App extends PureComponent {
         </div>
 
         {blocks.map(block => (
-          <li>{block.get('duration') / 60} min: {block.get('name')}</li>
+          <li key={block.get('key') || block.get('name')}>{block.get('duration') / 60} min: {block.get('name')}</li>
         ))}
       </div>
     );
