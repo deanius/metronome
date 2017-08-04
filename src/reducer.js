@@ -5,7 +5,7 @@ export const metronomeInitialState = {
     blocks: [
         {
             name: 'Intro',
-            duration: 2 * 60
+            duration: 1 * 60
         },
         {
             name: 'CLI Args',
@@ -14,6 +14,10 @@ export const metronomeInitialState = {
         {
             name: 'File Write',
             duration: 15 * 60
+        },
+        {
+            name: 'Guess Game',
+            duration: 1 * 60
         },
         {
             name: 'Docs/Stack Overflow',
