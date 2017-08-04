@@ -5,23 +5,23 @@ export const metronomeInitialState = {
     blocks: [
         {
             name: 'Intro',
-            duration: 2 //* 60
+            duration: 2 * 60
         },
         {
             name: 'CLI Args',
-            duration: 7 //* 60
+            duration: 7 * 60
         },
         {
             name: 'File Write',
-            duration: 15 //* 60
+            duration: 15 * 60
         },
         {
             name: 'Docs/Stack Overflow',
-            duration: 7 //* 60
+            duration: 7 * 60
         },
         {
             name: 'File Read',
-            duration: 10 //* 60
+            duration: 10 * 60
         },
     ]
 }

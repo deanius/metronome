@@ -41,10 +41,7 @@ export const makeAppProps = state => ({
   presentation: state.antares.getIn(defaultKey)
     .update('blocks', addBeginEnd),
   view: state.view,
-  speechAware: ('webkitSpeechRecognition' in window),
-  currentBlock() {
-    return this.presentation.toJS().blocks.find(b => b.begin >= this.view.present)
-  }
+  speechAware: ('webkitSpeechRecognition' in window)
 })
 
 class App extends PureComponent {
@@ -60,15 +57,25 @@ class App extends PureComponent {
     const isActive = view.get('active')
     const speechActive = view.get('speechActive')
 
-    const remaining = this.props.currentBlock() && (this.props.currentBlock().end - present)
+    const pathDef = `M 0,0 L 0.01,0.99 A 1,1 0 1 0 -.7,.7 Z`
 
     return (
       <div className="App">
         <h1>{name}
         <span onClick={e => process(Speech[speechActive ? 'stop' : 'start']())}>
-          {speechAware ? '🎤' : '🚫🎤'}
+          {speechAware && '🎤' }
           {speechAware && speechActive && '🎧' }
-        </span>
+          </span>
+        <div style={{ float: 'right', marginRight: 50 }}>
+            <svg height="200" width="200" viewBox="0 0 200 200">
+              {/* <g transform="translate(100, 100)">
+                 <circle cx="0" cy="0" r="100"/>
+              </g> */}
+              <g transform="translate(100, 100) scale(100, -100)">
+                <path fill="#0088cc" d={pathDef} />
+              </g>
+          </svg>
+          </div>
         </h1>
         <h3>{humanDuration(present)}</h3>
         <div>
