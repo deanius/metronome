@@ -2,24 +2,8 @@ import React, { PureComponent } from 'react'
 import './App.css'
 // action creators
 import { Timer, Speech } from './actions'
-export const defaultKey = ['presentation', 0]
+import { defaultKey } from './antares'
 
-if (!String.prototype.padStart) {
-    String.prototype.padStart = function padStart(targetLength,padString) {
-        targetLength = targetLength>>0; //floor if number or convert non-number to 0;
-        padString = String(padString || ' ');
-        if (this.length > targetLength) {
-            return String(this);
-        }
-        else {
-            targetLength = targetLength-this.length;
-            if (targetLength > padString.length) {
-                padString += padString.repeat(targetLength/padString.length); //append to original to ensure we are longer than needed
-            }
-            return padString.slice(0,targetLength) + String(this);
-        }
-    };
-}
 const humanDuration = duration => {
   return `${Math.floor(duration / 60)}:${String(Math.floor(duration % 60)).padStart(2, '0')}`
 }
@@ -30,7 +14,7 @@ const addBeginEnd = blocks => {
     return b
       .set('begin', elapsed)
       .update('end', () => {
-        elapsed += b.get('duration')
+        elapsed += b.duration
         return elapsed
       })
   })
@@ -39,8 +23,8 @@ const addBeginEnd = blocks => {
 // could use reselect here
 export const makeAppProps = state => ({
   presentation: state.antares.getIn(defaultKey)
-    .update('blocks', addBeginEnd),
-  view: state.view,
+    .update('blocks', addBeginEnd).toJS(),
+  view: state.view.toJS(),
   speechAware: ('webkitSpeechRecognition' in window)
 })
 
@@ -51,11 +35,8 @@ class App extends PureComponent {
     // dispatching functions
     const { process } = this.props
 
-    const blocks = presentation.get('blocks')
-    const name = presentation.get('name')
-    const present = view.get('present')
-    const isActive = view.get('active')
-    const speechActive = view.get('speechActive')
+    const { blocks, name } = presentation
+    const { present, isActive, speechActive } = view
 
     const pathDef = `M 0,0 L 0.01,0.99 A 1,1 0 1 0 -.7,.7 Z`
 
@@ -86,10 +67,11 @@ class App extends PureComponent {
         <ul className='modules'>
         {blocks.map(block => (
           <li
-            className={ isActive && present > block.get('begin') && present <= block.get('end') && 'active-block' }
-            key={block.get('key') || block.get('name')}>{humanDuration(block.get('duration'))}: {block.get('name')}</li>
+            className={ isActive && present > block.begin && present <= block.end && 'active-block' }
+            key={block.key || block.name}>{humanDuration(block.duration)}: {block.name}</li>
           ))}
         </ul>
+
       </div>
     );
   }

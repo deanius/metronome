@@ -4,6 +4,14 @@ export const metronomeInitialState = {
     name: 'Node 10.2',
     blocks: [
         {
+            name: 'Deep..',
+            duration: 2
+        },
+        {
+            name: 'Breath..',
+            duration: 3
+        },
+        {
             name: 'Intro',
             duration: 1 * 60
         },
