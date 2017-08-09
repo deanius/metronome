@@ -14,7 +14,7 @@ const addBeginEnd = blocks => {
     return b
       .set('begin', elapsed)
       .update('end', () => {
-        elapsed += b.duration
+        elapsed += b.get('duration')
         return elapsed
       })
   })
@@ -67,8 +67,12 @@ class App extends PureComponent {
         <ul className='modules'>
         {blocks.map(block => (
           <li
-            className={ isActive && present > block.begin && present <= block.end && 'active-block' }
-            key={block.key || block.name}>{humanDuration(block.duration)}: {block.name}</li>
+            className={ present > block.begin && present <= block.end && 'active-block' }
+              key={block.key || block.name}>
+              {humanDuration(block.duration)}:
+              {block.name}
+              &nbsp;&nbsp;({humanDuration(block.end)})
+          </li>
           ))}
         </ul>
 
