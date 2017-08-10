@@ -45,6 +45,8 @@ export const viewReducer = createReducer({
     'View.Timer.tick': (state) => {
         return state
             .update('present', p => p + 1)
+            // crude version
+            .update('percentComplete', p => p + 1)
             .set('active', true)
     },
     'View.Timer.stop': (state) => {
@@ -54,6 +56,7 @@ export const viewReducer = createReducer({
     }
 }, new iMap({
     present: 0,
+    percentComplete: 0,
     active: false,
     speechActive: false
 }))

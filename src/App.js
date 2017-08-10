@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react'
 import './App.css'
 // action creators
 import { Timer, Speech } from './actions'
+import { PieChart } from './pieChart'
 import { defaultKey } from './antares'
 
 const humanDuration = duration => {
@@ -36,9 +37,7 @@ class App extends PureComponent {
     const { process } = this.props
 
     const { blocks, name } = presentation
-    const { present, isActive, speechActive } = view
-
-    const pathDef = `M 0,0 L 0.01,0.99 A 1,1 0 1 0 -.7,.7 Z`
+    const { present, isActive, speechActive, percentComplete } = view
 
     return (
       <div className="App">
@@ -48,15 +47,8 @@ class App extends PureComponent {
           {speechAware && speechActive && '🎧' }
           </span>
         <div style={{ float: 'right', marginRight: 50 }}>
-            <svg height="200" width="200" viewBox="0 0 200 200">
-              {/* <g transform="translate(100, 100)">
-                 <circle cx="0" cy="0" r="100"/>
-              </g> */}
-              <g transform="translate(100, 100) scale(100, -100)">
-                <path fill="#0088cc" d={pathDef} />
-              </g>
-          </svg>
-          </div>
+            <PieChart percentComplete={percentComplete}/>
+        </div>
         </h1>
         <h3>{humanDuration(present)}</h3>
         <div>
