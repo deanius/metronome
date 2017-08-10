@@ -37,7 +37,7 @@ class App extends PureComponent {
     const { process } = this.props
 
     const { blocks, name } = presentation
-    const { present, isActive, speechActive } = view
+    const { present, speechActive } = view
     const currentBlock = blocks.find(block => present > block.begin && present <= block.end)
     const percentComplete = 100 * (currentBlock ? (present - currentBlock.begin) / currentBlock.duration : 0)
 
