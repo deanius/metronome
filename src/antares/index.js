@@ -24,13 +24,13 @@ const assignKey = () => ({ key: defaultKey })
 
 // Let's Initialize Antares, already !
 export const Antares = AntaresInit({
-    ReducerForKey: () => metronomeReducer,
-    MetaEnhancers: [assignKey],
-    ViewReducer: viewReducer,
-    Epics
+  ReducerForKey: () => metronomeReducer,
+  MetaEnhancers: [assignKey],
+  ViewReducer: viewReducer,
+  Epics
 })
 
 Object.assign(window, {
-    Antares,
-    metronomeReducer
+  Antares,
+  metronomeReducer
 })
