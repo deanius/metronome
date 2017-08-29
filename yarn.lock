@@ -131,7 +131,7 @@ ansi-styles@^3.0.0, ansi-styles@^3.1.0:
   dependencies:
     color-convert "^1.9.0"
 
-antares-protocol@>0.4.13:
+antares-protocol@^0.4.14:
   version "0.4.14"
   resolved "https://registry.yarnpkg.com/antares-protocol/-/antares-protocol-0.4.14.tgz#77f5106a73d2c5aa261be3c55107b679dceed102"
   dependencies:
