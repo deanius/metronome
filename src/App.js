@@ -4,6 +4,7 @@ import './App.css'
 import { Timer, Speech } from './actions'
 import { PieChart } from './pieChart'
 import { defaultKey } from './antares'
+import { ModalContainer, ModalDialog } from 'react-modal-dialog'
 
 const humanDuration = duration => {
   return `${Math.floor(duration / 60)}:${String(
@@ -32,6 +33,12 @@ export const makeAppProps = state => ({
 })
 
 class App extends PureComponent {
+  state = {
+    isShowingModal: false
+  }
+  handleClick = () => this.setState({ isShowingModal: true })
+  handleClose = () => this.setState({ isShowingModal: false })
+
   render() {
     // data fields
     const { presentation, view, speechAware } = this.props
@@ -63,16 +70,13 @@ class App extends PureComponent {
             <PieChart percentComplete={percentComplete} />
           </div>
         </h1>
-        <h3>
-          {humanDuration(present)}
-        </h3>
+        <h3>{humanDuration(present)}</h3>
         <div>
           <button onClick={e => process(Timer.start())}>Start</button>
           <button onClick={e => process(Timer.stop())}>Stop</button>
         </div>
-
         <ul className="modules">
-          {blocks.map(block =>
+          {blocks.map(block => (
             <li
               className={
                 present > block.begin && present <= block.end && 'active-block'
@@ -83,8 +87,23 @@ class App extends PureComponent {
               {block.name}
               &nbsp;&nbsp;({humanDuration(block.end)})
             </li>
-          )}
+          ))}
         </ul>
+        <div onClick={this.handleClick}>
+          {this.state.isShowingModal && (
+            <ModalContainer onClose={this.handleClose}>
+              <ModalDialog onClose={this.handleClose}>
+                <h1>Edit blocks</h1>
+                <textarea
+                  rows="20"
+                  cols="50"
+                  value={JSON.stringify(this.props.presentation, null, 2)}
+                />
+              </ModalDialog>
+            </ModalContainer>
+          )}
+          Edit blocks
+        </div>
       </div>
     )
   }

@@ -21,6 +21,13 @@ export const Timer = {
   }
 }
 
+export const View = {
+  toggleEditor() {
+    return {
+      type: 'View.toggleEditor'
+    }
+  }
+}
 export const Speech = {
   start() {
     return {

@@ -2,9 +2,9 @@ import React from 'react'
 export const PieChart = ({ percentComplete = 0 }) => {
   const portion = (percentComplete % 100) / 100
   const angle = 2 * Math.PI * portion
-  const x = Math.sin(angle)
+  const x = -1 * Math.sin(angle)
   const y = Math.cos(angle)
-  const flip = portion >= 0.5 ? 0 : 1
+  const flip = portion < 0.5 ? 0 : 1
 
   //const pathDef = `M 0,0 L 0.01,0.99 A 1,1 0 1 0 0.01,0.99 Z`
   const pathDef = `M 0,0 L 0,1.0 A 1,1 0 ${flip} 1 ${x}, ${y} Z`
