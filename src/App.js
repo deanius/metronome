@@ -83,7 +83,7 @@ class App extends PureComponent {
               }
               key={block.key || block.name}
             >
-              {humanDuration(block.duration)}:
+              {humanDuration(block.duration)} —
               {block.name}
               &nbsp;&nbsp;({humanDuration(block.end)})
             </li>
